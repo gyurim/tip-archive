@@ -61,7 +61,7 @@
 - Activity가 destroy 될 때, 같이 destroy되는 context
 - Dialog와 같은 GUI 작업 시, Activity Context 사용
 
-<img width="596" alt="스크린샷 2022-09-26 오후 6 38 20" src="[https://user-images.githubusercontent.com/31344894/192295326-ff4c8102-41f6-4692-a0a2-304468a30a5a.png](https://user-images.githubusercontent.com/31344894/192295326-ff4c8102-41f6-4692-a0a2-304468a30a5a.png)">
+<img width="596" alt="context" src="https://user-images.githubusercontent.com/31344894/192305294-12510a7e-7252-4a6e-aaca-d339537fec50.png">
 
 ### 상황 별 Context 선택
 
