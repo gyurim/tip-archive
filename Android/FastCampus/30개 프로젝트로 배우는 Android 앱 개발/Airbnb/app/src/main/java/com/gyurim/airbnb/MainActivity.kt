@@ -4,6 +4,8 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraUpdate
@@ -14,6 +16,7 @@ import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.util.FusedLocationSource
 import com.naver.maps.map.util.MarkerIcons
+import com.naver.maps.map.widget.LocationButtonView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,6 +36,16 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private val viewPagerAdapter = HouseViewPagerAdapter()
 
+    private val recyclerView: RecyclerView by lazy {
+        findViewById(R.id.recyclerView)
+    }
+
+    private val recyclerViewAdapter = HouseListAdapter()
+
+    private val currentLocationButton: LocationButtonView by lazy {
+        findViewById(R.id.currentLocationButton)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -46,6 +59,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         mapView.getMapAsync(this)
 
         viewPager.adapter = viewPagerAdapter
+        recyclerView.adapter = recyclerViewAdapter
+        recyclerView.layoutManager = LinearLayoutManager(this)
     }
 
     // mainActivity 에서 onMapReady()를 구현해줌으로써 mainActivity 는 OnMapReadyCallback의 구현체가 되었음
@@ -62,7 +77,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // 현위치
         val uiSetting = naverMap.uiSettings
-        uiSetting.isLocationButtonEnabled = true // 현재 위치 버튼
+        uiSetting.isLocationButtonEnabled = false // true: 지도에 현재 위치 버튼 생성 및 활성화 (네이버 맵이 제공하는 기본 버전), false: 비활성화
+        currentLocationButton.map = naverMap
 
         locationSource = FusedLocationSource(this@MainActivity, LOCATION_PERMISSION_REQUEST_CODE)
         naverMap.locationSource = locationSource
@@ -87,6 +103,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                     response.body()?.let { dto ->
                         updateMarker(dto.items)
                         viewPagerAdapter.submitList(dto.items)
+                        recyclerViewAdapter.submitList(dto.items)
                     }
                 }
 
