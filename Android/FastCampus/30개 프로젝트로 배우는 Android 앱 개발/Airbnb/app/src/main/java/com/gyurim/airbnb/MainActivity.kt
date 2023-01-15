@@ -4,6 +4,7 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.viewpager2.widget.ViewPager2
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.LocationTrackingMode
@@ -26,6 +27,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     }
     private lateinit var locationSource: FusedLocationSource
 
+    private val viewPager: ViewPager2 by lazy {
+        findViewById(R.id.houseViewPager)
+    }
+
+    private val viewPagerAdapter = HouseViewPagerAdapter()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -37,6 +44,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // mapview에서 navermap 객체 가져옴
         mapView.getMapAsync(this)
+
+        viewPager.adapter = viewPagerAdapter
     }
 
     // mainActivity 에서 onMapReady()를 구현해줌으로써 mainActivity 는 OnMapReadyCallback의 구현체가 되었음
@@ -45,7 +54,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         naverMap = map
 
         // 줌 레벨 정보
-        naverMap.maxZoom = 18.0
+        naverMap.maxZoom = 20.0
         naverMap.minZoom = 10.0
 
         val cameraUpdate = CameraUpdate.scrollTo(LatLng(37.497885, 127.027512))
@@ -77,6 +86,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                     }
                     response.body()?.let { dto ->
                         updateMarker(dto.items)
+                        viewPagerAdapter.submitList(dto.items)
                     }
                 }
 
