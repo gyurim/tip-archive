@@ -56,4 +56,7 @@ dependencies {
 
     // Naver Map SDK
     implementation 'com.naver.maps:map-sdk:3.16.0'
+
+    // location permission
+    implementation("com.google.android.gms:play-services-location:16.0.0") // 21.0.1로 하니까 FusedLocationProviderClient 에러 뜸 (java.lang.IncompatibleClassChangeError)
 }
