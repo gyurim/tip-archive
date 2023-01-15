@@ -59,4 +59,12 @@ dependencies {
 
     // location permission
     implementation("com.google.android.gms:play-services-location:16.0.0") // 21.0.1로 하니까 FusedLocationProviderClient 에러 뜸 (java.lang.IncompatibleClassChangeError)
+
+    // Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+    // glide
+    implementation 'com.github.bumptech.glide:glide:4.14.2'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
 }
